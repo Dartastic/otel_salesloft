@@ -2,7 +2,7 @@ name: otel_salesloft
 description: >-
   OpenTelemetry instrumentation for salesloft by Dartastic.io. Adds standard
   OpenTelemetry observability to applications that use salesloft.
-version: 0.1.0-wip
+version: 0.1.0
 repository: https://github.com/dartastic/otel_salesloft
 homepage: https://dartastic.io
 
