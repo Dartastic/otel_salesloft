@@ -1,15 +1,16 @@
-// Licensed under the Dartastic Pro Software License Agreement.
+// Licensed under the Apache License, Version 2.0
 // Copyright 2025-2026 Mindful Software LLC d/b/a Dartastic.io, All rights reserved.
 
-import 'package:dartastic_opentelemetry/dartastic_opentelemetry.dart';
+import 'package:dartastic_opentelemetry_api/dartastic_opentelemetry_api.dart';
 
 import 'otel_salesloft_suppression.dart';
 
 const _tracerName = 'dartastic_otel_libs_salesloft';
 
-Tracer _tracer() => OTel.tracerProvider().getTracer(_tracerName);
+APITracer _tracer() => OTelAPI.tracerProvider().getTracer(_tracerName);
 
 class SalesloftResult {
+  /// Creates a result.
   const SalesloftResult({
     this.teamId,
     this.entityKind,
@@ -87,8 +88,13 @@ class SalesloftResult {
   final int? statusCode;
 }
 
+/// What a traced call returned: the value for the caller plus fields
+/// recorded on the span.
 class SalesloftCallResult<T> {
+  /// Creates a call result.
   const SalesloftCallResult({required this.value, this.result});
+
+  /// The value returned to the caller.
   final T value;
   final SalesloftResult? result;
 }
@@ -116,50 +122,50 @@ Future<T> tracedSalesloft<T>({
   final span = _tracer().startSpan(
     'salesloft $operation',
     kind: SpanKind.client,
-    attributes: OTel.attributesFromMap(m),
+    attributes: OTelAPI.attributesFromMap(m),
   );
   try {
     final r = await invoke();
     if (r.result != null) {
       final extras = <Attribute<Object>>[];
       if (r.result!.teamId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.team.id',
           r.result!.teamId!,
         ));
       }
       if (r.result!.entityKind != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.entity.kind',
           r.result!.entityKind!,
         ));
       }
       if (r.result!.entityId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.entity.id',
           r.result!.entityId!,
         ));
       }
       if (r.result!.personId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.person.id',
           r.result!.personId!,
         ));
       }
       if (r.result!.accountId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.account.id',
           r.result!.accountId!,
         ));
       }
       if (r.result!.cadenceId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.cadence.id',
           r.result!.cadenceId!,
         ));
       }
       if (r.result!.cadenceMembershipState != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.cadence_membership.state',
           r.result!.cadenceMembershipState!,
         ));
@@ -171,25 +177,25 @@ Future<T> tracedSalesloft<T>({
         }
       }
       if (r.result!.cadenceStep != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'salesloft.cadence.step',
           r.result!.cadenceStep!,
         ));
       }
       if (r.result!.totalCadenceSteps != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'salesloft.cadence.total_steps',
           r.result!.totalCadenceSteps!,
         ));
       }
       if (r.result!.emailId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.email.id',
           r.result!.emailId!,
         ));
       }
       if (r.result!.emailStatus != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.email.status',
           r.result!.emailStatus!,
         ));
@@ -202,49 +208,49 @@ Future<T> tracedSalesloft<T>({
         }
       }
       if (r.result!.callId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.call.id',
           r.result!.callId!,
         ));
       }
       if (r.result!.callDisposition != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.call.disposition',
           r.result!.callDisposition!,
         ));
       }
       if (r.result!.callSentiment != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.call.sentiment',
           r.result!.callSentiment!,
         ));
       }
       if (r.result!.taskId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.task.id',
           r.result!.taskId!,
         ));
       }
       if (r.result!.taskType != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.task.type',
           r.result!.taskType!,
         ));
       }
       if (r.result!.mailboxId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'salesloft.mailbox.id',
           r.result!.mailboxId!,
         ));
       }
       if (r.result!.optedOut != null) {
-        extras.add(OTel.attributeBool(
+        extras.add(OTelAPI.attributeBool(
           'salesloft.person.opted_out',
           r.result!.optedOut!,
         ));
       }
       if (r.result!.statusCode != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'http.response.status_code',
           r.result!.statusCode!,
         ));
@@ -255,13 +261,13 @@ Future<T> tracedSalesloft<T>({
           );
         }
       }
-      if (extras.isNotEmpty) span.addAttributes(OTel.attributes(extras));
+      if (extras.isNotEmpty) span.addAttributes(OTelAPI.attributes(extras));
     }
     return r.value;
   } catch (e, st) {
-    span.addAttributes(OTel.attributes([
-      OTel.attributeString(
-        ErrorResource.errorType.key,
+    span.addAttributes(OTelAPI.attributes([
+      OTelAPI.attributeString(
+        ErrorAttributes.errorType.key,
         e.runtimeType.toString(),
       ),
     ]));
